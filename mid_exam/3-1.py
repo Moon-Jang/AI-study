@@ -26,3 +26,4 @@ print("evalData")
 for i in range(len(iris_data.eval_data)):
     print(iris_data.eval_data[i])
 print("배열길이", len(iris_data.eval_data))
+print("############################################################################")
