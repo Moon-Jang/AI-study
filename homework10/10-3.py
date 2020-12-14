@@ -47,6 +47,8 @@ d1 = np.zeros(H1DIM)
 d2 = np.zeros(OUTDIM)
 
 for epoch in range(10000):
+    if epoch % 100 == 0:
+        print(y2)
     for p in range(3):
         # feed forwarding
         # LAYER-1 (Hidden Layer)
@@ -61,7 +63,6 @@ for epoch in range(10000):
             for j in range(H1DIM):
                 out += w2[i][j] * y1[j]
             y2[i] = sigmoid(out)
-        
         # Back Propagation
         # delta(error) for Layer-2 (Output Layer)
         for i in range(OUTDIM):
