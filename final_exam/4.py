@@ -33,11 +33,17 @@ class Model:
         self.model.fit(self.x, self.y, epochs=30000, verbose=0)
         print("Learnging End !!!")
     
+    def get_learn_result(self):
+        result_loss, result_accuracy = self.model.evaluate(self.x, self.y, verbose=0)
+        print("#4-1 학습 결과 ")
+        print("cost: ", result_loss, "  accuracy:", result_accuracy)
+        
     def result(self):
         print("prediction")
         print(list(map(lambda el: list(map(lambda el: round(el, 2), el)), self.model.predict(self.x))))
     
     def test(self):
+        print("#4-2")
         out = list(map(lambda el: list(map(lambda el: round(el, 2), el)), self.model.predict(self.x_test)))
         for i in range(11):
             for j in range(11):
@@ -54,5 +60,6 @@ xor_y_train = xor_xy[:, -1:]
 
 xor_model = Model(xor_x_train, xor_y_train)
 xor_model.learn()
+xor_model.get_learn_result()
 xor_model.result()
 xor_model.test()

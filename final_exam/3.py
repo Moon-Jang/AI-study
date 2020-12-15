@@ -3,10 +3,6 @@ import csv
 import math
 from functools import reduce
 
-K = 3
-NUM = 2
-
-
 class Iris:
     def __init__(self, total_data):
         self.learn_data = []
@@ -24,22 +20,42 @@ class Iris:
             e_data = []
             for j in range(50):
                 if j < 40:
-                    l_data.append(total_data[(i * 50) + j][2:4])
+                    temp = total_data[(i * 50) + j][0:4]
+                    if i == 0:
+                        temp.append(1)
+                        temp.append(0)
+                        temp.append(0)
+                        l_data.append(temp)
+                    elif i == 1:
+                        temp.append(0)
+                        temp.append(1)
+                        temp.append(0)
+                        l_data.append(temp)
+                    elif i == 2:
+                        temp.append(0)
+                        temp.append(0)
+                        temp.append(1)
+                        l_data.append(temp)
+                        pass
                 else:
-                    e_data.append(total_data[(i * 50) + j][2:4])
-            if i == 0:
-                self.setosa = IrisType(l_data)
-            elif i == 1:
-                self.versicolor = IrisType(l_data)
-            elif i == 2:
-                self.virginica = IrisType(l_data)
-                pass
+                    e_data.append(total_data[(i * 50) + j][0:4])
+            
             self.learn_data += l_data
             self.eval_data += e_data
             pass
         self.normalized_data = list(
             zip(self.get_normalization([element[0] for element in self.learn_data]),
-                self.get_normalization([element[1] for element in self.learn_data])))
+                self.get_normalization([element[1] for element in self.learn_data]),
+                self.get_normalization([element[2] for element in self.learn_data]),
+                self.get_normalization([element[3] for element in self.learn_data]),
+                self.get_normalization([element[4] for element in self.learn_data]),
+                self.get_normalization([element[5] for element in self.learn_data]),
+                self.get_normalization([element[6] for element in self.learn_data])))
+        self.eval_data = list(
+            zip(self.get_normalization([element[0] for element in self.eval_data]),
+                self.get_normalization([element[1] for element in self.eval_data]),
+                self.get_normalization([element[2] for element in self.eval_data]),
+                self.get_normalization([element[3] for element in self.eval_data]),))
     
     def get_normalization(self, _list):
         max_element = max(_list)
@@ -59,34 +75,6 @@ class Iris:
         for idx in shuffle_idx:
             self.rand_data.append(self.learn_data[idx])
 
-
-class IrisType:
-    def __init__(self, data):
-        self.petal_width = {}
-        self.petal_length = {}
-        self.DEGIT = 6
-        self.setup_data(data)
-    
-    def setup_data(self, data):
-        self.petal_width["data"] = list(map(lambda el: float(el[0]), data))
-        self.petal_length["data"] = list(map(lambda el: float(el[1]), data))
-        self.petal_width["average"] = self.get_average(self.petal_width["data"])
-        self.petal_length["average"] = self.get_average(self.petal_length["data"])
-        self.petal_width["variance"] = self.get_variance(self.petal_width["data"], self.petal_width["average"])
-        self.petal_length["variance"] = self.get_variance(self.petal_length["data"], self.petal_length["average"])
-    
-    def get_average(self, _list):
-        return round(reduce(lambda acc, cur: acc + cur, _list, 0) / len(_list), self.DEGIT)
-    
-    def get_variance(self, _list, average):
-        deviation_list = tuple(map(lambda item: round(average - item, self.DEGIT), _list))
-        return round(reduce(lambda acc, cur: acc + cur ** 2,
-                            deviation_list, 0) / len(_list), self.DEGIT)
-    
-    def get_standard_devation(self, variance):
-        return round(math.sqrt(variance), self, self.DEGIT)
-
-
 def fetch_excel(path, header):
     with open(path, 'r', encoding='utf-8-sig') as f:
         reader = list(csv.reader(f))
@@ -98,4 +86,7 @@ def fetch_excel(path, header):
     
 DATA = fetch_excel('./iris_data.csv', [])
 iris_data = Iris(DATA)
-print(iris_data.normalized_data)
+
+print("# 3-1 정규환된 아이리스 데이터")
+for el in iris_data.normalized_data:
+    print(el[0:4])
