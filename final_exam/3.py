@@ -98,4 +98,4 @@ def fetch_excel(path, header):
     
 DATA = fetch_excel('./iris_data.csv', [])
 iris_data = Iris(DATA)
-print(iris_data.get_normalization())
+print(iris_data.normalized_data)
